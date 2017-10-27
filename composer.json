@@ -1,0 +1,14 @@
+{
+    "name": "leclaude/projet-toto",
+    "description": "Gestion des etudiants de sessions de formation webforce3",
+    "type": "project",
+    "authors": [
+        {
+            "name": "leClaude",
+            "email": "alexandre.claudon@gmail.com"
+        }
+    ],
+    "require": {
+        "social-links/social-links": "^1.13"
+    }
+}

@@ -1,5 +1,8 @@
-<footer class="container text-align-center">
-  <i class="fa fa-copyright" aria-hidden="true"></i> <?php echo date('Y') ?> | Tous droits réservés
+<footer class="container text-center mt-5">
+  <i class="fa fa-copyright" aria-hidden="true"></i> <?php echo date('Y') ?> | Tous droits réservés<br>
+  <a href="<?php echo $socialLinksPage->facebook->shareUrl ?>">Facebook</a> |
+  <a href="<?php echo $socialLinksPage->twitter->shareUrl ?>">Twitter</a> |
+  <a href="<?php echo $socialLinksPage->linkedin->shareUrl ?>">LinkedIn</a>
 </footer>
 
 

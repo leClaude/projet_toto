@@ -28,7 +28,7 @@
   <body>
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
@@ -43,6 +43,11 @@
               <a class="nav-link" href="add.php">Ajout d'un étudiant</a>
             </li>
           </ul>
+          <form class="form-inline" action="list.php" method="get">
+            <label class=" mr-2" for="">Recherche</label>
+            <input class=" mr-2" type="text" name="search" value="">
+             <button class="mr-2" type="submit">Envoyer</button>
+          </form>
         </div>
       </nav>
     </header>
