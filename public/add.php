@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/../inc/config.php' ;
-
+// initialisation des variables
 $lastname = '';
 $firstname = '';
 $birthdate = '';
@@ -8,8 +8,21 @@ $email = '';
 $friendliness = '';
 $session = '';
 $city = '';
+$formOk = true ;
 
+// récupération de la liste des villes
+$sql1 = "SELECT cit_name, cit_id FROM city" ;
+$pdoStatement1 = $pdo->prepare($sql1) ;
+$pdoStatement1->execute() ;
+$cities = $pdoStatement1->fetchAll(PDO::FETCH_ASSOC) ;
 
+// récupération de la liste des sessions
+$sql2 = "SELECT ses_id, ses_number, ses_start_date, ses_end_date FROM session" ;
+$pdoStatement2 = $pdo->prepare($sql2) ;
+$pdoStatement2->execute() ;
+$sessions = $pdoStatement2->fetchAll(PDO::FETCH_ASSOC) ;
+
+// Si requête de modification - chargement des valeurs de l'élève
 if(isset($_GET['id'])) {
   $id = $_GET['id'] ;
   $id = trim(strip_tags($id)) ;
@@ -25,22 +38,10 @@ if(isset($_GET['id'])) {
   $friendliness = $student[0]['stu_friendliness'] ;
   $session = $student[0]['session_ses_id'] ;
   $city = $student[0]['city_cit_id'] ;
-} ;
+}
 
-// récupération de la liste des villes
-$sql1 = "SELECT cit_name, cit_id FROM city" ;
-$pdoStatement1 = $pdo->prepare($sql1) ;
-$pdoStatement1->execute() ;
-$cities = $pdoStatement1->fetchAll(PDO::FETCH_ASSOC) ;
-
-// récupération de la liste des sessions
-$sql2 = "SELECT ses_id, ses_number, ses_start_date, ses_end_date FROM session" ;
-$pdoStatement2 = $pdo->prepare($sql2) ;
-$pdoStatement2->execute() ;
-$sessions = $pdoStatement2->fetchAll(PDO::FETCH_ASSOC) ;
-
-// afffectation du POST aux variables
-if(isset($_POST['lastname'])){
+// Si requête création - afffectation du POST aux variables
+else if (isset($_POST['lastname'])){
   $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
   $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
   $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : '';
@@ -68,7 +69,6 @@ if(isset($_POST['lastname'])){
     $formOk = false ;
     //echo 'Prénom invalide.<br>' ;
   } ;
-
   if (empty($birthdate)) {
     //echo 'Date de naissance invalide.<br>';
     $formOk = false;
@@ -85,38 +85,49 @@ if(isset($_POST['lastname'])){
     //echo 'Date de naissance invalide.<br>';
     $formOk = false;
   } ;
-
-
-  // insertion dans la db
-  if ($formOk) {
-    if(empty($_GET['id'])) {
-      $sql = "INSERT INTO student (stu_lastname, stu_firstname, stu_birthdate, stu_email, stu_friendliness, session_ses_id, city_cit_id) VALUES (:lastname, :firstname, :birthdate, :email, :friendliness, :session, :city)" ;
-    } else {
-      $sql = "UPDATE student SET stu_lastname=:lastname, stu_firstname=:firstname, stu_birthdate=:birthdate, stu_email=:email, stu_friendliness=:friendliness, session_ses_id=:session, city_cit_id=:city WHERE stu_id=:id" ;
-      print_r("hello") ;
-    }
-    $pdoStatement = $pdo->prepare($sql) ;
-    $pdoStatement->bindValue(':lastname',$lastname, PDO::PARAM_STR) ;
-    $pdoStatement->bindValue(':firstname',$firstname, PDO::PARAM_STR) ;
-    $pdoStatement->bindValue(':birthdate',$birthdate, PDO::PARAM_INT) ;
-    $pdoStatement->bindValue(':email',$email, PDO::PARAM_STR) ;
-    $pdoStatement->bindValue(':friendliness',$friendliness, PDO::PARAM_INT) ;
-    $pdoStatement->bindValue(':session',$session, PDO::PARAM_INT) ;
-    $pdoStatement->bindValue(':city',$city, PDO::PARAM_INT) ;
-    $pdoStatement->bindValue(':id',$id, PDO::PARAM_INT) ;
-    $pdoStatement->execute() ;
-    if(empty($_GET['id'])) {
-      $id = $pdo->lastInsertId() ;
-    } else {
-      print_r($pdoStatement->fetchAll(PDO::FETCH_ASSOC)) ;
-    };
-    header("Location: student.php?id={$id}");
-    exit();
-  } else {
-    //echo 'formulaire non valide' ;
-  } ;
 } ;
 
+
+// insertion - modification dans la db
+
+// création si get n'existe pas - modification si il existe
+if(isset($_POST['lastname']) && $formOk) {
+if (!isset($_GET['id'])) {
+  $sql = "INSERT INTO student (stu_lastname, stu_firstname, stu_birthdate, stu_email, stu_friendliness, session_ses_id, city_cit_id) VALUES (:lastname, :firstname, :birthdate, :email, :friendliness, :session, :city)" ;
+  $pdoStatement = $pdo->prepare($sql) ;
+  $pdoStatement->bindValue(':lastname',$lastname, PDO::PARAM_STR) ;
+  $pdoStatement->bindValue(':firstname',$firstname, PDO::PARAM_STR) ;
+  $pdoStatement->bindValue(':birthdate',$birthdate, PDO::PARAM_INT) ;
+  $pdoStatement->bindValue(':email',$email, PDO::PARAM_STR) ;
+  $pdoStatement->bindValue(':friendliness',$friendliness, PDO::PARAM_INT) ;
+  $pdoStatement->bindValue(':session',$session, PDO::PARAM_INT) ;
+  $pdoStatement->bindValue(':city',$city, PDO::PARAM_INT) ;
+  $pdoStatement->execute() ;
+  $id = $pdo->lastInsertId() ;
+} else {
+  var_dump($lastname) ;
+  var_dump($firstname) ;
+  var_dump($birthdate) ;
+  var_dump($email) ;
+  var_dump($friendliness) ;
+  var_dump($session) ;
+  var_dump($city) ;
+  var_dump($id) ;
+    $sql2 = 'UPDATE student SET stu_lastname=:lastname, stu_firstname=:firstname, stu_birthdate=:birthdate, stu_email=:email, stu_friendliness=:friendliness, session_ses_id=:session, city_cit_id=:city WHERE stu_id=:id' ;
+    $pdoStatement2 = $pdo->prepare($sql2) ;
+    $pdoStatement2->bindValue(':lastname',$lastname, PDO::PARAM_STR) ;
+    $pdoStatement2->bindValue(':firstname',$firstname, PDO::PARAM_STR) ;
+    $pdoStatement2->bindValue(':birthdate',$birthdate, PDO::PARAM_INT) ;
+    $pdoStatement2->bindValue(':email',$email, PDO::PARAM_STR) ;
+    $pdoStatement2->bindValue(':friendliness',$friendliness, PDO::PARAM_INT) ;
+    $pdoStatement2->bindValue(':session',$session, PDO::PARAM_INT) ;
+    $pdoStatement2->bindValue(':city',$city, PDO::PARAM_INT) ;
+    $pdoStatement2->bindValue(':id',$id, PDO::PARAM_INT) ;
+    $pdoStatement2->execute() ;
+    print_r($pdoStatement2->errorInfo()) ;
+  } ;
+  //header("Location: student.php?id={$id}");
+} ;
 
 require_once __DIR__.'/../view/header.php' ;
 require_once __DIR__.'/../view/add.php' ;
