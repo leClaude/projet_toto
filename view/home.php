@@ -90,7 +90,7 @@
      // Set chart options
      var options = {
        'title': "Nombre d'étudiants par ville",
-       'width': 600,
+       'width': 500,
        'height': 400
      };
 

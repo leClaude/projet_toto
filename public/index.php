@@ -1,4 +1,8 @@
 <?php
+session_start() ;
+if ($_SERVER['REMOTE_ADDR']!=$_SESSION['ip']) {
+    header("Location: disconnect.php");
+} ;
 require_once __DIR__.'/../inc/config.php' ;
 
 
@@ -19,4 +23,3 @@ require_once __DIR__.'/../view/home.php' ;
 require_once __DIR__.'/../view/footer.php' ;
 
  ?>
-</pre>

@@ -42,7 +42,22 @@
             <li class="nav-item">
               <a class="nav-link" href="add.php">Ajout d'un étudiant</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="transfert.php">Transfert de fichiers</a>
+            </li>
+            <?php if(empty($_SESSION['id'])) : ?>
+                <li class="nav-item">
+                  <a class="nav-link" href="signup.php">Inscription</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="signin.php">Connexion</a>
+                </li>
+            <?php endif ; ?>
           </ul>
+          <?php if(!empty($_SESSION['id'])) : ?>
+              <span class="pr-5">Connecté en tant que : <?= $_SESSION['id'] ?></span>
+              <a href="disconnect.php" class="btn btn-primary mr-5">Déconnexion</a>
+          <?php endif ; ?>
           <form class="form-inline" action="list.php" method="get">
             <label class=" mr-2" for="">Recherche</label>
             <input class=" mr-2" type="text" name="search" value="">
