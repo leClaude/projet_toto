@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+<!--
+     __      _____  ______  __      ______  __    __  ______   _____
+    |  |    |   __||   ___||  |    |  __  ||  |  |  ||   _  \ |   __|
+    |  |    |  |__ |  |    |  |    | |__| ||  |  |  ||  |  \ \|  |__
+    |  |    |   __||  |    |  |    |  __  ||  |  |  ||  |  | ||   __|
+    |  |___ |  |__ |  |___ |  |___ | |  | ||  |__|  ||  |__/ /|  |__
+    |______||_____||______||______||_|  |_||________||______/ |_____|
+    
+-->
 <!--*************** HEAD ***************-->
   <head>
     <!-- AFFICHAGE -->
@@ -24,6 +33,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
     <!-- MON CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
     <header>
@@ -36,15 +47,22 @@
             <li class="nav-item">
               <a class="nav-link" href="index.php">Toutes les sessions</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="list.php">Tous les étudiants</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="add.php">Ajout d'un étudiant</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="transfert.php">Transfert de fichiers</a>
-            </li>
+            <?php if (!empty($_SESSION['id'])) : ?>
+                <li class="nav-item">
+                  <a class="nav-link" href="list.php">Tous les étudiants</a>
+                </li>
+            <?php endif ; ?>
+            <?php if (!empty($_SESSION['role'])) : if ($_SESSION['role']=='admin') : ?>
+                <li class="nav-item">
+                  <a class="nav-link" href="add.php">Ajout d'un étudiant</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="transfert.php">Transfert de fichiers</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="users.php">Users</a>
+                </li>
+            <?php endif ; endif ;?>
             <?php if(empty($_SESSION['id'])) : ?>
                 <li class="nav-item">
                   <a class="nav-link" href="signup.php">Inscription</a>
@@ -55,13 +73,13 @@
             <?php endif ; ?>
           </ul>
           <?php if(!empty($_SESSION['id'])) : ?>
-              <span class="pr-5">Connecté en tant que : <?= $_SESSION['id'] ?></span>
-              <a href="disconnect.php" class="btn btn-primary mr-5">Déconnexion</a>
+              <span class="text-info pr-2">Connecté en tant que : <?= $_SESSION['id'] ?></span>
+              <a href="disconnect.php" class="btn btn-outline-info mr-5">Déconnexion</a>
           <?php endif ; ?>
           <form class="form-inline" action="list.php" method="get">
             <label class=" mr-2" for="">Recherche</label>
-            <input class=" mr-2" type="text" name="search" value="">
-             <button class="mr-2" type="submit">Envoyer</button>
+            <input class="form-control mr-2" type="text" name="search" value="">
+             <button class="btn btn-outline-info mr-2" type="submit">Envoyer</button>
           </form>
         </div>
       </nav>

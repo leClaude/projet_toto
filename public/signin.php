@@ -5,6 +5,7 @@ require_once __DIR__.'/../inc/config.php' ;
 $emailError = '';
 $pwdError = '';
 
+
 // traitement du formulaire
 if(!empty($_POST)) {
     // récupération des données et affectation des varaibles
@@ -42,8 +43,11 @@ if(!empty($_POST)) {
         } else if (password_verify($pwd , $user[0]['usr_password'])) {
             $ip = $_SERVER['REMOTE_ADDR'] ;
             $id = $user[0]['usr_id'] ;
+            $role = $user[0]['usr_role'] ;
             $_SESSION['id'] = $id ;
             $_SESSION['ip'] = $ip ;
+            $_SESSION['role'] = $role ;
+            header('Location: index.php') ;
         } else {
             $pwdError = 'Mot de passe erroné';
         }

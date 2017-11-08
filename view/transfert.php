@@ -15,5 +15,10 @@
               <input type="hidden" name="export" value="true" />
               <input type="submit" class="mx-auto w-50 mt-4 btn btn-success btn-block" value="Exporter" />
           </div>
+          <?php if (file_exists('export/export-'.date('Ymd').'.csv')) : ?>
+              <div class="row">
+                  <a class="mx-auto w-50 mt-4 mb-2 btn btn-success btn-block" href=<?='export/export-'.date('Ymd').'.csv'?>>Télécharger le fichier exporté</a>
+              </div>
+         <?php endif ; ?>
       </form>
 </div>

@@ -60,42 +60,40 @@
     </div>
   <?php endforeach ; ?>
 </div>
-<!--Load the AJAX API-->
-   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-   <script type="text/javascript">
-   // Load the Visualization API and the corechart package.
-   google.charts.load('current', {
-     'packages': ['corechart']
-   });
+<script type="text/javascript">
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {
+      'packages': ['corechart']
+    });
 
-   // Set a callback to run when the Google Visualization API is loaded.
-   google.charts.setOnLoadCallback(drawChart);
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
 
-   // Callback that creates and populates a data table,
-   // instantiates the pie chart, passes in the data and
-   // draws it.
-   function drawChart() {
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
 
-     // Create the data table.
+      // Create the data table.
 
-     var data = new google.visualization.DataTable();
-     data.addColumn('string', 'Ville');
-     data.addColumn('number', "Nombre d'étudiants");
-     data.addRows([
-      <?php foreach ($studentByCity as $key => $value) : ?>
-       ["<?=$value['cit_name']?>", <?=$value['COUNT(*)']?>],
-      <?php endforeach ; ?>
-     ]);
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Ville');
+      data.addColumn('number', "Nombre d'étudiants");
+      data.addRows([
+       <?php foreach ($studentByCity as $key => $value) : ?>
+        ["<?=$value['cit_name']?>", <?=$value['COUNT(*)']?>],
+       <?php endforeach ; ?>
+      ]);
 
-     // Set chart options
-     var options = {
-       'title': "Nombre d'étudiants par ville",
-       'width': 500,
-       'height': 400
-     };
+      // Set chart options
+      var options = {
+        'title': "Nombre d'étudiants par ville",
+        'width': 500,
+        'height': 400
+      };
 
-     // Instantiate and draw our chart, passing in some options.
-     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-     chart.draw(data, options);
-   };
-   </script>
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    };
+</script>

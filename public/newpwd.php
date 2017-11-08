@@ -69,6 +69,6 @@ if(!empty($_POST)) {
 
 
 require_once __DIR__.'/../view/header.php' ;
-require_once __DIR__.'/../view/signup.php' ;
+require_once __DIR__.'/../view/newpwd.php' ;
 require_once __DIR__.'/../view/footer.php' ;
  ?>

@@ -2,6 +2,7 @@
 session_start() ;
 if ($_SERVER['REMOTE_ADDR']!=$_SESSION['ip']) {
     header("Location: disconnect.php");
+    exit ; 
 } ;
 require_once __DIR__.'/../inc/config.php' ;
 
