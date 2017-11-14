@@ -7,7 +7,7 @@
     |  |    |   __||  |    |  |    |  __  ||  |  |  ||  |  | ||   __|
     |  |___ |  |__ |  |___ |  |___ | |  | ||  |__|  ||  |__/ /|  |__
     |______||_____||______||______||_|  |_||________||______/ |_____|
-    
+
 -->
 <!--*************** HEAD ***************-->
   <head>
@@ -69,6 +69,9 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="signin.php">Connexion</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="newpwd.php">Mot de passe oublié</a>
                 </li>
             <?php endif ; ?>
           </ul>

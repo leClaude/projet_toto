@@ -2,8 +2,8 @@
 session_start() ;
 require_once __DIR__.'/../inc/config.php' ;
 
-$emailError = '';
-$pwdError = '';
+$error = '' ;
+
 // traitement du formulaire
 if(!empty($_POST)) {
     // récupération des données et affectation des varaibles
@@ -12,17 +12,6 @@ if(!empty($_POST)) {
     } else {
         $email = '' ;
     } ;
-    if (isset($_POST['password1'])) {
-        $pwd1 = trim(strip_tags($_POST['password1'])) ;
-    } else {
-        $pwd1 = '' ;
-    } ;
-    if (isset($_POST['password1'])) {
-        $pwd2 = trim(strip_tags($_POST['password2'])) ;
-    } else {
-        $pwd2 = '' ;
-    } ;
-
 
 
     // validation des variables
@@ -31,37 +20,29 @@ if(!empty($_POST)) {
     // validation email
     if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         $formOk = false ;
-        $emailError = "Email non valide" ;
+        $error .= "Email non valide " ;
     } ;
-    // validation password
-    $password = '' ;
-    if ($pwd1==$pwd2) {
-        if (pwdCheck($pwd1)===true) {
-            $password = password_hash($pwd1, PASSWORD_BCRYPT) ;
-        } else {
-            $formOk = false ;
-            $pwdError = "Mot de passe non valide" ;
-        } ;
-    } else {
-        $formOk = false ;
-        $pwdError = "Les deux mots de passe ne correspondent pas" ;
-    }
+
     // si le formulaire n'est pas ok
     if ($formOk == false) {
-        echo "<script>alert ('Formulaire incorrect')</script>" ;
+        echo "<script>alert({$error})</script>" ;
     } else {
         // si l'email existe
-        if (emailExists($email)) {
-            echo "<script>alert ('Cet email existe déjà')</script>" ;
+        if (!emailExists($email)) {
+            echo "<script>alert ('Cet email n'existe pas')</script>" ;
         } else {
-        // insertion dans la base de données
-        $sql = "INSERT INTO user (usr_email, usr_password, usr_role) VALUES (:email, :password, 'user')" ;
-        $pdoStatement = $pdo->prepare($sql) ;
-        $pdoStatement->bindValue(':email', $email) ;
-        $pdoStatement->bindValue(':password', $password) ;
-        $pdoStatement->execute() ;
-        echo "<script>alert ('Vous êtes correctement enregistré')</script>" ;
-        header('Location: index.php') ;
+            $token = md5(mt_rand()) ;
+            // insertion dans la base de données du token
+            $sql = "UPDATE user SET usr_token=:token WHERE usr_email=:email" ;
+            $pdoStatement = $pdo->prepare($sql) ;
+            $pdoStatement->bindValue(':token', $token) ;
+            $pdoStatement->bindValue(':email', $email) ;
+            $pdoStatement->execute() ;
+            $subject = 'Projet Toto : activation de votre nouveau mot de passe' ;
+            $url = "projet-toto.dev/resetpwd.php?token={$token}" ;
+            $html = "Cliquez sur ce lien pour réinitialiser votre mot de passe : {$url}" ;
+            sendEmail ($email, $subject, $html) ;
+            echo "<script>alert ('Un email vient de vous être envoyé.')</script>" ;
         }
 
     }
