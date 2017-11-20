@@ -36,7 +36,7 @@
       <td> <?php echo $list[$key]['stu_firstname'] ?> </td>
       <td> <?php echo $list[$key]['stu_email'] ; ?> </td>
       <td> <?php echo $list[$key]['stu_birthdate'] ; ?> </td>
-      <td><a class="btn btn-success" href=<?php echo "student.php?id={$list[$key]['stu_id']}"?>><i class="fa fa-info" aria-hidden="true"></i></a></td>
+      <td><a class="btn btn-success studentDetail" data-id="<?=$list[$key]['stu_id']?>" href=<?php echo "student.php?id={$list[$key]['stu_id']}"?>><i class="fa fa-info" aria-hidden="true"></i></a></td>
       <?php if (!empty($_SESSION['role'])) : if ($_SESSION['role']=='admin') : ?>
           <td><a class="btn btn-danger" href=<?php echo "list.php?del={$list[$key]['stu_id']}"?>><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
           <td><a class="btn btn-warning" href=<?php echo "add.php?id={$list[$key]['stu_id']}"?>><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
@@ -45,3 +45,27 @@
     <?php endforeach ; ?>
   </tbody>
 </table>
+<div id="popupStudent" class="container" style="display:none;position:absolute;z-index:1000;left:35%;top:15%;width:400px;background-color:white;">
+</div>
+
+<script type="text/javascript">
+$(".studentDetail").click(function(e){
+    e.preventDefault() ;
+    var id = $(this).data('id') ;
+    console.log(id) ;
+    $.ajax({
+        url : 'ajax/student.php',
+        method : 'POST',
+        data : {
+            'id' : id
+        }
+    }).done(function(response){
+        $('#popupStudent').html(response) ;
+        $('#popupStudent').css('display','block') ;
+        console.log(response) ;
+        $(".close").click(function(){
+            $("#popupStudent").css('display','none') ;
+        }) ;
+    }) ;
+}) ;
+</script>

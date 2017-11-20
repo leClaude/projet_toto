@@ -11,20 +11,21 @@ $pdoStatement = $pdo->prepare($sql) ;
 $pdoStatement->bindValue(':id',$id,PDO::PARAM_INT) ;
 $pdoStatement->execute() ;
 $student = $pdoStatement->fetchAll(PDO::FETCH_ASSOC) ;
-?>
-<div class="container">
-  <div class="card mx-auto mt-5">
-    <div class="card-block">
-      <h4 class="card-header text-center bg-primary text-white"><?php echo $student[0]['stu_firstname'].' '.$student[0]['stu_lastname']?></h4>
-      <ul class="list-group list-group-flush">
-          <li class="list-group-item">IDENTIFIANT : <?= $student[0]['stu_id'] ?></li>
-          <li class="list-group-item">NOM : <?= $student[0]['stu_lastname'] ?></li>
-          <li class="list-group-item">PRENOM : <?= $student[0]['stu_firstname'] ?></li>
-          <li class="list-group-item">DATE DE NAISSANCE : <?= $student[0]['stu_birthdate'] ?></li>
-          <li class="list-group-item">EMAIL : <?= $student[0]['stu_email'] ?></li>
-          <li class="list-group-item">FRIENDLINESS : <?= $student[0]['stu_friendliness'] ?></li>
 
-      </ul>
+
+?>
+
+  <div class="card mx-auto mt-5">
+          <i class="fa fa-times-circle-o text-right lead close" aria-hidden="true"></i>
+    <div class="card-block">
+        <h4 class="card-header text-center bg-primary text-white"><?php echo $student[0]['stu_firstname'].' '.$student[0]['stu_lastname']?></h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">IDENTIFIANT : <?= $student[0]['stu_id'] ?></li>
+            <li class="list-group-item">NOM : <?= $student[0]['stu_lastname'] ?></li>
+            <li class="list-group-item">PRENOM : <?= $student[0]['stu_firstname'] ?></li>
+            <li class="list-group-item">DATE DE NAISSANCE : <?= $student[0]['stu_birthdate'] ?></li>
+            <li class="list-group-item">EMAIL : <?= $student[0]['stu_email'] ?></li>
+            <li class="list-group-item">FRIENDLINESS : <?= $student[0]['stu_friendliness'] ?></li>
+        </ul>
     </div>
   </div>
-</div>

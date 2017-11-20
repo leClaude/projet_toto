@@ -9,7 +9,7 @@
 <!--************** SCRIPT **************-->
     <!-- JQUERY LOCAL <script type="text/javascript" src="lib\Jquery\jquery-3.2.1.min.js"></script> -->
     <!-- JQUERY CDN -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
     <!-- BOOTSTRAP LOCAL sans popper.js <script type="text/javascript" src="lib/Bootstrap/js/bootstrap.min.js"></script> -->
     <!-- BOOTSTRAP CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>

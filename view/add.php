@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <form action="" method="post" class="card">
+  <form id="addForm" action="" method="post" class="card">
     <?php if(isset($_GET['id'])) : ?>
       <h4 class="bg-warning text-white card-header text-center">MODIFIER UN ETUDIANT</h4>
     <?php else : ?>
@@ -29,7 +29,7 @@
       <label class="text-left px-2">Session</label>
       <select class="form-control w-75 mr-2" name="session">
         <?php foreach ($sessions as $key => $value) : ?>
-          <option><?php echo $value['ses_id'].' - session du '.$value['ses_start_date'].' au '.$value['ses_end_date'] ; ?></option>
+          <option value="<?=$value['ses_id']?>"><?php echo $value['ses_id'].' - session du '.$value['ses_start_date'].' au '.$value['ses_end_date'] ; ?></option>
         <?php endforeach ; ?>
       </select>
     </div>
@@ -37,7 +37,7 @@
       <label class="text-left px-2">Ville</label>
       <select class="form-control w-75 mr-2" name="city">
         <?php foreach ($cities as $key => $value) : ?>
-          <option><?php echo $value['cit_id'].' - '.$value['cit_name'] ; ?></option>
+          <option value="<?=$value['cit_id']?>"><?php echo $value['cit_id'].' - '.$value['cit_name'] ; ?></option>
         <?php endforeach ; ?>
       </select>
     </div>
@@ -46,3 +46,39 @@
     </div>
   </form>
 </div>
+<script type="text/javascript">
+$(function(){
+    $("#addForm").submit(function(e){
+        e.preventDefault() ;
+        var lastname = $("input[name='lastname']").val() ;
+        var firstname = $("input[name='firstname']").val() ;
+        var birthdate = $("input[name='birthdate']").val() ;
+        var email = $("input[name='email']").val() ;
+        var friendliness = $("input[name='friendliness']").val() ;
+        var session = $("select[name='session'] option:selected").val() ;
+        var city = $("select[name='city'] option:selected").val() ;
+        var id = <?php if(isset($_GET['id'])){echo $_GET['id'];} else {echo '0';}; ?>;
+        console.log(lastname+' '+firstname+' '+birthdate+' '+lastname+' '+email+' '+friendliness+' '+session+' '+city+' '+id) ;
+        $.ajax({
+            'url' : 'ajax/add.php',
+            'method' : 'POST',
+            'data' : {
+                'lastname' : lastname,
+                'firstname' : firstname,
+                'birthdate' : birthdate,
+                'email' : email,
+                'friendliness' : friendliness,
+                'session' : session,
+                'city' : city,
+                'id' : id
+            }
+        })
+        .done(function(response) {
+            alert(response)
+        })
+        .fail(function(){
+            alert('Connexion échouée')
+        })
+    }) ; // end of addForm
+})// end of Jquery
+</script>
